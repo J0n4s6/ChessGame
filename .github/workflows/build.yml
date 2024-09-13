@@ -1,0 +1,29 @@
+name: Build Project
+
+on: [push]  
+
+# Define the jobs that will run during the workflow
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: '3.30.x'
+
+      - name: Set up Visual Studio
+        uses: microsoft/setup-msbuild@v1
+        with:
+          vs-version: 'latest'
+
+      - name: Build the project
+        run: |
+          cmake -Bbuild
+          cmake --build build
