@@ -8,8 +8,16 @@
             "args": [
                 "--build",
                 "build/"
+            ],
+            "dependsOn": "configure",
+        },
+        {
+            "label": "configure",
+            "type": "shell",
+            "command" :"cmake",
+            "args": [
+                "-Bbuild"
             ]
-
         }
     ]
 }
