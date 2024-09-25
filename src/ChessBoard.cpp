@@ -2,19 +2,18 @@
 
 #include "raylib.h"
 
-ChessBoard::ChessBoard(int width, int height) {
-    float slot_width = static_cast<float>(width / _board_dim);
-    float slot_height = static_cast<float>(height / _board_dim);
-    for (auto i = 0; i < _board_dim; i++) {
-        for (auto j = 0; j < _board_dim; j++) {
+ChessBoard::ChessBoard() {
+    for (auto i = 0; i < constants::BOARD_DIM; i++) {
+        for (auto j = 0; j < constants::BOARD_DIM; j++) {
             _board[i][j].color = (i + j) % 2 ? WHITE : BLACK;
-            _board[i][j].rectangle = {i * slot_width, j * slot_height, slot_width, slot_height};
+            _board[i][j].rectangle = {static_cast<float>(i * constants::SLOT_LEN), static_cast<float>(j * constants::SLOT_LEN), constants::SLOT_LEN,
+                                      constants::SLOT_LEN};
         }
     }
 }
 void ChessBoard::DrawCheckBoard() {
-    for (auto i = 0; i < _board_dim; i++) {
-        for (auto j = 0; j < _board_dim; j++) {
+    for (auto i = 0; i < constants::BOARD_DIM; i++) {
+        for (auto j = 0; j < constants::BOARD_DIM; j++) {
             DrawRectangleRec(_board[i][j].rectangle, _board[i][j].color);
         }
     }

@@ -1,5 +1,6 @@
 #include <array>
 
+#include "ScreenDimensions.hpp"
 #include "raylib.h"
 
 struct Slot {
@@ -9,10 +10,9 @@ struct Slot {
 
 class ChessBoard {
    private:
-    static const size_t _board_dim = 8;
-    std::array<std::array<Slot, _board_dim>, _board_dim> _board;
+    std::array<std::array<Slot, constants::BOARD_DIM>, constants::BOARD_DIM> _board;
 
    public:
-    ChessBoard(int width, int height);
+    ChessBoard();
     void DrawCheckBoard();
 };
