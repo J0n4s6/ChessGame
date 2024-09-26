@@ -1,23 +1,23 @@
 #pragma once
 #include <raylib.h>
 
-#include <ScreenDimensions.hpp>
+#include "Constants.hpp"
+#include "Position.hpp"
 
 enum class Type { Pawn, Rook, Bishop, Knight, King, Queen };
 
-struct Position {
-    int x_axis;
-    int y_axis;
-};
+enum class Side { White, Black };
 
 class ChessPiece {
    public:
-    ChessPiece(Type type, Position position);
+    ChessPiece(Type type, SlotPosition position, Side side);
+    ~ChessPiece();
     void DrawChessPiece();
 
    private:
     Type _type;
-    Position _position;
-    Image _image;
+    Side _side;
+    PixelPosition _position;
     Texture2D _texture;
+    Texture2D LoadAndReiszeImage(const char* file_name);
 };
