@@ -1,8 +1,9 @@
 #pragma once
 
 namespace constants {
-constexpr int SCREEN_LEN = 900;
+constexpr int SCREEN_LEN = 896;
 constexpr int BOARD_DIM = 8;
+static_assert(SCREEN_LEN % BOARD_DIM == 0);
 constexpr int SLOT_LEN = SCREEN_LEN / BOARD_DIM;
 constexpr char BLACK_BISHOP[] = "media/images/black-bishop.png";
 constexpr char BLACK_KING[] = "media/images/black-king.png";
