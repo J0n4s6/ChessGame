@@ -3,7 +3,7 @@
     "configurations": [
         {
             "name":"Launch",
-            "type": "cppvsdbg",
+            "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/build/Debug/ChessGame.exe",
             "cwd": "${workspaceRoot}",

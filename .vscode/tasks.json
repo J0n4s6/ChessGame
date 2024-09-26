@@ -3,21 +3,8 @@
     "tasks": [
         {
             "label": "build",
-            "type": "shell",
-            "command": "cmake",
-            "args": [
-                "--build",
-                "build/"
-            ],
-            "dependsOn": "configure",
-        },
-        {
-            "label": "configure",
-            "type": "shell",
-            "command" :"cmake",
-            "args": [
-                "-Bbuild"
-            ]
+            "type": "cmake",
+            "command": "build",
         }
     ]
 }

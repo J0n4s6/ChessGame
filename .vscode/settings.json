@@ -1,5 +1,7 @@
 {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "xaver.clang-format",
-    "editor.renderWhitespace": "all"
+    "editor.renderWhitespace": "all",
+    "cmake.generator": "MinGW Makefiles",
+    "cmake.buildDirectory": "${workspaceFolder}/build",
 }
