@@ -1,6 +1,5 @@
 #include "ChessPiece.hpp"
 
-#include <filesystem>
 #include <iostream>
 #include <stdexcept>
 
@@ -57,7 +56,7 @@ ChessPiece::~ChessPiece() { UnloadTexture(_texture); }
 
 Texture2D ChessPiece::LoadAndReiszeImage(const char* file_name) {
     Image image;
-    if (!std::filesystem::exists(file_name)) std::cerr << TextFormat("Could not find %s", file_name) << std::endl;
+    if (!FileExists(file_name)) std::cerr << TextFormat("Could not find %s", file_name) << std::endl;
     image = LoadImage(file_name);
     ImageResize(&image, constants::SLOT_LEN, constants::SLOT_LEN);
     if (image.data == nullptr) {
