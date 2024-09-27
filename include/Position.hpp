@@ -1,17 +1,5 @@
 #pragma once
-
-struct PixelPosition;
-struct SlotPosition;
-
-/**
- * \brief this saves the position in pixels of the left-most up-most corner of the chess piece currently in play
- * \example (0,0), (112, 112), (448, 672)
- */
-struct PixelPosition {
-    int x_axis;
-    int y_axis;
-    SlotPosition ToSlotPosition();
-};
+#include <raylib.h>
 
 /**
  * \brief this saves the position of the chess piece according to an 8x8 grid
@@ -20,5 +8,7 @@ struct PixelPosition {
 struct SlotPosition {
     int x_axis;
     int y_axis;
-    PixelPosition ToPixelPosition();
+    SlotPosition(int x, int y);
+    SlotPosition(const Vector2& vec);
+    Vector2 ToPixelPosition();
 };

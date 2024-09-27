@@ -67,4 +67,11 @@ Texture2D ChessPiece::LoadAndReiszeImage(const char* file_name) {
     return texture;
 }
 
-void ChessPiece::DrawChessPiece() { DrawTexture(_texture, _position.y_axis, _position.x_axis, WHITE); }
+void ChessPiece::DrawChessPiece() { DrawTexture(_texture, _position.x, _position.y, WHITE); }
+
+bool ChessPiece::IsVec2InPiece(const Vector2& vec) { return CheckCollisionPointRec(vec, {_position.x, _position.y, constants::SLOT_LEN, constants::SLOT_LEN}); }
+
+void ChessPiece::UpdatePosition(const Vector2& vec) {
+    // Set position to be the center of the piece
+    _position = {vec.x - constants::SLOT_LEN / 2.0f, vec.y - constants::SLOT_LEN / 2.0f};
+};
