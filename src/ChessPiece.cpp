@@ -75,3 +75,8 @@ void ChessPiece::UpdatePosition(const Vector2& vec) {
     // Set position to be the center of the piece
     _position = {vec.x - constants::SLOT_LEN / 2.0f, vec.y - constants::SLOT_LEN / 2.0f};
 };
+
+void ChessPiece::CorrectPosition(const Vector2& vec) {
+    _position.x = (static_cast<int>(vec.x) / constants::SLOT_LEN) * constants::SLOT_LEN;
+    _position.y = (static_cast<int>(vec.y) / constants::SLOT_LEN) * constants::SLOT_LEN;
+}

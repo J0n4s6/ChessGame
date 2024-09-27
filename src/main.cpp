@@ -55,7 +55,6 @@ std::list<std::shared_ptr<ChessPiece>> InitiatePieces() {
 std::shared_ptr<ChessPiece> GetPieceCollisionWithMouse(const Vector2& vec, const std::list<std::shared_ptr<ChessPiece>>& pieces) {
     for (auto& piece : pieces) {
         if (piece->IsVec2InPiece(vec)) {
-            std::cout << "Picked Piece!\n";
             return piece;
         }
     }
@@ -75,11 +74,13 @@ int main(void) {
         BeginDrawing();
         chess_board.DrawCheckBoard();
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            std::cout << "Searching for piece\n";
             moving_piece = GetPieceCollisionWithMouse(GetMousePosition(), pieces);
         }
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-            moving_piece = nullptr;
+            if (moving_piece != nullptr) {
+                moving_piece->CorrectPosition(GetMousePosition());
+                moving_piece = nullptr;
+            }
         }
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
             if (moving_piece != nullptr) {

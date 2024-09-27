@@ -15,6 +15,7 @@ class ChessPiece {
     void DrawChessPiece();
     bool IsVec2InPiece(const Vector2& vec);
     void UpdatePosition(const Vector2& vec);
+    void CorrectPosition(const Vector2& vec);
 
    private:
     Type _type;
