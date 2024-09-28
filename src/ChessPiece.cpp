@@ -78,15 +78,7 @@ void ChessPiece::DrawChessPiece() { DrawTexture(_texture, _position.x, _position
 
 bool ChessPiece::IsVec2InPiece(const Vector2& vec) { return CheckCollisionPointRec(vec, _GetRectangle()); }
 
-void ChessPiece::UpdatePosition(const Vector2& vec) {
-    // Set position to be the center of the piece
-    _position = {vec.x - consts::CELL_LEN / 2.0f, vec.y - consts::CELL_LEN / 2.0f};
-};
-
-void ChessPiece::CorrectPosition(const Vector2& vec) {
-    _position.x = (static_cast<int>(vec.x) / consts::CELL_LEN) * consts::CELL_LEN;
-    _position.y = (static_cast<int>(vec.y) / consts::CELL_LEN) * consts::CELL_LEN;
-}
+void ChessPiece::UpdatePositionWhenDragging(const Vector2& vec) { _position = {vec.x - consts::CELL_LEN / 2.0f, vec.y - consts::CELL_LEN / 2.0f}; };
 
 bool ChessPiece::CheckCollisionChessPiece(const ChessPiece& other) { return _position.x == other._position.x && _position.y == other._position.y; }
 }  // namespace chess_game

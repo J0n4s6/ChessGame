@@ -39,20 +39,25 @@ ChessGame::ChessGame() {
 void ChessGame::UpdateGame() {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         _moving_piece = _GetPieceCollisionWithMouse(GetMousePosition(), _pieces);
+        _moving_piece_last_position = _moving_piece->GetCellPosition();
     }
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
         if (_moving_piece != nullptr) {
-            _moving_piece->CorrectPosition(GetMousePosition());
-            auto eaten_piece = _MovingPieceEats(_moving_piece, _pieces);
-            if (eaten_piece.has_value()) {
-                _pieces.remove(eaten_piece.value());
+            if (_CanPieceMoveToCell(_moving_piece, _pieces, CellPosition(GetMousePosition()), _moving_piece_last_position)) {
+                _moving_piece->SetCellPosition(CellPosition(GetMousePosition()));
+                auto eaten_piece = _MovingPieceEats(_moving_piece, _pieces);
+                if (eaten_piece.has_value()) {
+                    _pieces.remove(eaten_piece.value());
+                }
+            } else {
+                _moving_piece->SetCellPosition(_moving_piece_last_position);
             }
             _moving_piece = nullptr;
         }
     }
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
         if (_moving_piece != nullptr) {
-            _moving_piece->UpdatePosition(GetMousePosition());
+            _moving_piece->UpdatePositionWhenDragging(GetMousePosition());
         }
     }
 }
@@ -83,5 +88,10 @@ std::optional<std::shared_ptr<ChessPiece>> ChessGame::_MovingPieceEats(const std
         }
     }
     return {};
+}
+
+bool ChessGame::_CanPieceMoveToCell(const std::shared_ptr<ChessPiece>& moving_piece, const std::list<std::shared_ptr<ChessPiece>>& _piece, CellPosition new_pos,
+                                    CellPosition old_pos) {
+    return true;
 }
 }  // namespace chess_game

@@ -15,8 +15,9 @@ class ChessPiece {
     ~ChessPiece();
     void DrawChessPiece();
     bool IsVec2InPiece(const Vector2& vec);
-    void UpdatePosition(const Vector2& vec);
-    void CorrectPosition(const Vector2& vec);
+    void UpdatePositionWhenDragging(const Vector2& vec);
+    CellPosition GetCellPosition() { return CellPosition(_position); }
+    void SetCellPosition(CellPosition pos) { _position = pos.ToPixelPosition(); }
     bool CheckCollisionChessPiece(const ChessPiece& other);
     const Side GetSide() { return _side; }
 
