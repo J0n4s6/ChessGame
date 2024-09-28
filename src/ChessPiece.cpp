@@ -88,8 +88,5 @@ void ChessPiece::CorrectPosition(const Vector2& vec) {
     _position.y = (static_cast<int>(vec.y) / consts::CELL_LEN) * consts::CELL_LEN;
 }
 
-bool ChessPiece::CheckCollisionChessPiece(ChessPiece& other) {
-    // FIXME make this use cells and not rectangle collision, do it after the position correction
-    return CheckCollisionRecs(this->_GetRectangle(), other._GetRectangle());
-}
+bool ChessPiece::CheckCollisionChessPiece(const ChessPiece& other) { return _position.x == other._position.x && _position.y == other._position.y; }
 }  // namespace chess_game

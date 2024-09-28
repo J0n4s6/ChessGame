@@ -17,7 +17,8 @@ class ChessPiece {
     bool IsVec2InPiece(const Vector2& vec);
     void UpdatePosition(const Vector2& vec);
     void CorrectPosition(const Vector2& vec);
-    bool CheckCollisionChessPiece(ChessPiece& other);
+    bool CheckCollisionChessPiece(const ChessPiece& other);
+    const Side GetSide() { return _side; }
 
    private:
     Type _type;
