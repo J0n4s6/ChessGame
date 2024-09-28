@@ -2,28 +2,27 @@ name: Build Project
 
 on: [push]  
 
-# Define the jobs that will run during the workflow
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          submodules: true
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        submodules: true
 
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v2
-        with:
-          cmake-version: '3.30.x'
+    - name: Install MSYS2 and MinGW
+      uses: msys2/setup-msys2@v2
+      with:
+        architecture: 'x86_64'
+        pacman_packages: |
+          mingw-w64-x86_64-gcc
+          mingw-w64-x86_64-cmake
+          mingw-w64-x86_64-make
+        update: false
 
-      - name: Set up Visual Studio
-        uses: microsoft/setup-msbuild@v1
-        with:
-          vs-version: 'latest'
-
-      - name: Build the project
-        run: |
-          cmake -Bbuild
-          cmake --build build
+    - name: Build the project
+      run: |
+        cmake -G "MinGW Makefiles" -Bbuild -DCMAKE_BUILD_TYPE=Release
+        cmake --build build

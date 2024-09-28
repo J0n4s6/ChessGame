@@ -3,16 +3,18 @@
 #include "Constants.hpp"
 #include "raylib.h"
 
-struct Slot {
+namespace chess_game {
+struct Cell {
     Rectangle rectangle;
     Color color;
 };
 
 class ChessBoard {
    private:
-    std::array<std::array<Slot, constants::BOARD_DIM>, constants::BOARD_DIM> _board;
+    std::array<std::array<Cell, consts::BOARD_DIM>, consts::BOARD_DIM> _board;
 
    public:
     ChessBoard();
     void DrawCheckBoard();
 };
+}  // namespace chess_game

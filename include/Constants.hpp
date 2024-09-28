@@ -1,10 +1,11 @@
 #pragma once
 
-namespace constants {
+namespace chess_game {
+namespace consts {
 constexpr int SCREEN_LEN = 896;
 constexpr int BOARD_DIM = 8;
 static_assert(SCREEN_LEN % BOARD_DIM == 0);
-constexpr int SLOT_LEN = SCREEN_LEN / BOARD_DIM;
+constexpr int CELL_LEN = SCREEN_LEN / BOARD_DIM;
 constexpr char BLACK_BISHOP[] = "media/images/black-bishop.png";
 constexpr char BLACK_KING[] = "media/images/black-king.png";
 constexpr char BLACK_KNIGHT[] = "media/images/black-knight.png";
@@ -17,4 +18,5 @@ constexpr char WHITE_KNIGHT[] = "media/images/white-knight.png";
 constexpr char WHITE_PAWN[] = "media/images/white-pawn.png";
 constexpr char WHITE_QUEEN[] = "media/images/white-queen.png";
 constexpr char WHITE_ROOK[] = "media/images/white-rook.png";
-}  // namespace constants
+}  // namespace consts
+}  // namespace chess_game

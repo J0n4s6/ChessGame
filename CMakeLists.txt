@@ -4,8 +4,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 project(ChessGame)
+
 set(RAYLIB external/raylib)
 add_subdirectory(${RAYLIB})
-include_directories(${RAYLIB}/src include)
-link_libraries(raylib)
+
 add_executable(ChessGame src/main.cpp src/ChessBoard.cpp src/ChessPiece.cpp src/Position.cpp)
+target_include_directories(ChessGame PRIVATE ${RAYLIB}/src include)
+target_link_libraries(ChessGame PRIVATE raylib)
+target_compile_options(ChessGame PRIVATE  -Wall -Werror)
