@@ -39,16 +39,24 @@ ChessGame::ChessGame() {
 void ChessGame::UpdateGame() {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         _moving_piece = _GetPieceCollisionWithMouse(GetMousePosition(), _pieces);
-        _moving_piece_last_position = _moving_piece->GetCellPosition();
+        if (_moving_piece != nullptr) {
+            _moving_piece_last_position = _moving_piece->GetCellPosition();
+        }
     }
     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
         if (_moving_piece != nullptr) {
-            if (_CanPieceMoveToCell(_moving_piece, _pieces, CellPosition(GetMousePosition()), _moving_piece_last_position, _current_turn)) {
-                _moving_piece->SetCellPosition(CellPosition(GetMousePosition()));
+            CellPosition moving_piece_destination = CellPosition(GetMousePosition());
+            bool move_is_legal = true;
+            move_is_legal &= _moving_piece->GetSide() == _current_turn;
+            move_is_legal &= _IsDestinationOccupiedByAlly(_moving_piece, _pieces, moving_piece_destination);
+            move_is_legal &= _IsAbleToMoveThisWay(_moving_piece, _moving_piece_last_position, moving_piece_destination);
+            if (move_is_legal) {
+                _moving_piece->SetCellPosition(moving_piece_destination);
                 auto eaten_piece = _MovingPieceEats(_moving_piece, _pieces);
                 if (eaten_piece.has_value()) {
                     _pieces.remove(eaten_piece.value());
                 }
+                _ToggleTurn(_current_turn);
             } else {
                 _moving_piece->SetCellPosition(_moving_piece_last_position);
             }
@@ -90,16 +98,16 @@ std::optional<std::shared_ptr<ChessPiece>> ChessGame::_MovingPieceEats(const std
     return {};
 }
 
-bool ChessGame::_CanPieceMoveToCell(const std::shared_ptr<ChessPiece>& moving_piece, const std::list<std::shared_ptr<ChessPiece>>& _piece, CellPosition new_pos,
-                                    CellPosition old_pos, Side& current_turn) {
-    auto ToggleTurn = [](Side& turn) { turn = turn == Side::White ? Side::Black : Side::White; };
-    // Zero check if this type of piece can move right now (is it the right turn?) maybe do this check outside?
-    // First check if this type of piece can do this type of movement
-    // Second check if there is an allied piece on new_pos
-    if (moving_piece->GetSide() == current_turn) {
-        ToggleTurn(current_turn);
-        return true;
+bool ChessGame::_IsDestinationOccupiedByAlly(const std::shared_ptr<ChessPiece>& moving_piece, const std::list<std::shared_ptr<ChessPiece>>& pieces,
+                                             CellPosition& destination) {
+    for (auto& piece : pieces) {
+        if (piece->GetSide() == moving_piece->GetSide()) {
+            auto piece_pos = piece->GetCellPosition();
+            if (piece_pos.x == destination.x && piece_pos.y == destination.y) {
+                return false;
+            }
+        }
     }
-    return false;
+    return true;
 }
 }  // namespace chess_game

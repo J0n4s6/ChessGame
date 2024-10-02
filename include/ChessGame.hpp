@@ -25,7 +25,9 @@ class ChessGame {
     static std::shared_ptr<ChessPiece> _GetPieceCollisionWithMouse(const Vector2& vec, const std::list<std::shared_ptr<ChessPiece>>& pieces);
     static std::optional<std::shared_ptr<ChessPiece>> _MovingPieceEats(const std::shared_ptr<ChessPiece>& moving_piece,
                                                                        const std::list<std::shared_ptr<ChessPiece>>& pieces);
-    static bool _CanPieceMoveToCell(const std::shared_ptr<ChessPiece>& moving_piece, const std::list<std::shared_ptr<ChessPiece>>& _piece, CellPosition new_pos,
-                                    CellPosition old_pos, Side& current_turn);
+    static void _ToggleTurn(Side& turn) { turn = turn == Side::White ? Side::Black : Side::White; };
+    static bool _IsDestinationOccupiedByAlly(const std::shared_ptr<ChessPiece>& moving_piece, const std::list<std::shared_ptr<ChessPiece>>& pieces,
+                                             CellPosition& destination);
+    static bool _IsAbleToMoveThisWay(const std::shared_ptr<ChessPiece>& moving_piece, CellPosition& last_position, CellPosition& destination) { return true; }
 };
 }  // namespace chess_game
