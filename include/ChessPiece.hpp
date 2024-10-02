@@ -31,5 +31,12 @@ class ChessPiece {
     Texture2D _LoadAndReiszeImage(const char* file_name);
     const CellPosition _GetCellPosition();
     const Rectangle _GetRectangle();
+
+    bool _PawnMovement(CellPosition src_pos, CellPosition dst_pos);
+    bool _RookMovement(CellPosition src_pos, CellPosition dst_pos);
+    bool _BishopMovement(CellPosition src_pos, CellPosition dst_pos);
+    bool _QueenMovement(CellPosition src_pos, CellPosition dst_pos);
+    bool _KingMovement(CellPosition src_pos, CellPosition dst_pos);
+    bool _KnightMovement(CellPosition src_pos, CellPosition dst_pos);
 };
 }  // namespace chess_game

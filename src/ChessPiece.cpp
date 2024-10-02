@@ -1,7 +1,6 @@
 #include "ChessPiece.hpp"
 
 #include <iostream>
-#include <stdexcept>
 
 namespace chess_game {
 ChessPiece::ChessPiece(Type type, Side side, CellPosition position) : _type(type), _side(side), _position(position.ToPixelPosition()) {
@@ -88,24 +87,86 @@ bool ChessPiece::IsAbleToMove(CellPosition src_pos, CellPosition dst_pos) {
     }
     /**
      * 1. Start with standard movements
+     *  1.1. Pawn - done
+     *  1.2. Rook - done
+     *  1.3. Knight - done
+     *  1.4. Bishop - done
+     *  1.5. Queen - done
+     *  1.6. King - done
      * 2. Then add special clauses:
-     *  2.1. pawn start
+     *  2.1. pawn start - done
      *  2.2. pawn eating
      *  2.2. pawn en-passent
      *  2.3. pawn update (start by queen default)
-     *  2.4. king-rook short and long castle
+     *  2.4. king short and long castle
+     * 3. What about line of sight? <- for rook and bishop, the others are composed of them!)
      **/
     switch (_type) {
         case Type::Pawn:
-            return _side == Side::White ? src_pos.y == dst_pos.y + 1 : src_pos.y == dst_pos.y - 1;
+            return _PawnMovement(src_pos, dst_pos);
         case Type::Rook:
+            return _RookMovement(src_pos, dst_pos);
         case Type::Knight:
+            return _KnightMovement(src_pos, dst_pos);
         case Type::Bishop:
+            return _BishopMovement(src_pos, dst_pos);
         case Type::Queen:
+            return _QueenMovement(src_pos, dst_pos);
         case Type::King:
-            return true;
+            return _KnightMovement(src_pos, dst_pos);
     }
-    return true;
+    return false;
 }
 
+bool ChessPiece::_PawnMovement(CellPosition src_pos, CellPosition dst_pos) {
+    if (src_pos.x != dst_pos.x) {
+        return false;
+    }
+    switch (_side) {
+        case Side::White:
+            if (src_pos.y == 6) {
+                return dst_pos.y == 5 || dst_pos.y == 4;
+            } else {
+                return src_pos.y == dst_pos.y + 1;
+            }
+        case Side::Black:
+            if (src_pos.y == 1) {
+                return dst_pos.y == 2 || dst_pos.y == 3;
+            } else {
+                return src_pos.y == dst_pos.y - 1;
+            }
+    }
+    return false;
+}
+
+bool ChessPiece::_RookMovement(CellPosition src_pos, CellPosition dst_pos) {
+    if (src_pos.x == dst_pos.x || src_pos.y == dst_pos.y) {
+        return true;
+    }
+    return false;
+}
+
+bool ChessPiece::_BishopMovement(CellPosition src_pos, CellPosition dst_pos) {
+    if (abs(src_pos.y - dst_pos.y) == abs(src_pos.x - dst_pos.x)) {
+        return true;
+    }
+    return false;
+}
+
+bool ChessPiece::_QueenMovement(CellPosition src_pos, CellPosition dst_pos) { return _RookMovement(src_pos, dst_pos) || _BishopMovement(src_pos, dst_pos); }
+
+bool ChessPiece::_KingMovement(CellPosition src_pos, CellPosition dst_pos) {
+    if (abs(src_pos.x - dst_pos.x) > 1 || abs(src_pos.y - dst_pos.y) > 1) {
+        return false;
+    } else {
+        return _QueenMovement(src_pos, dst_pos);
+    }
+}
+bool ChessPiece::_KnightMovement(CellPosition src_pos, CellPosition dst_pos) {
+    if (abs(src_pos.x - dst_pos.x) > 2 || abs(src_pos.y - dst_pos.y) > 2) {
+        return false;
+    } else {
+        return !_QueenMovement(src_pos, dst_pos);
+    }
+}
 }  // namespace chess_game
