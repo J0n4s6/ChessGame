@@ -49,7 +49,7 @@ void ChessGame::UpdateGame() {
             bool move_is_legal = true;
             move_is_legal &= _moving_piece->GetSide() == _current_turn;
             move_is_legal &= _IsDestinationOccupiedByAlly(_moving_piece, _pieces, moving_piece_destination);
-            move_is_legal &= _IsAbleToMoveThisWay(_moving_piece, _moving_piece_last_position, moving_piece_destination);
+            move_is_legal &= _moving_piece->IsAbleToMove(_moving_piece_last_position, moving_piece_destination);
             if (move_is_legal) {
                 _moving_piece->SetCellPosition(moving_piece_destination);
                 auto eaten_piece = _MovingPieceEats(_moving_piece, _pieces);

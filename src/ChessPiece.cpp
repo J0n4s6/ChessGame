@@ -81,4 +81,31 @@ bool ChessPiece::IsVec2InPiece(const Vector2& vec) { return CheckCollisionPointR
 void ChessPiece::UpdatePositionWhenDragging(const Vector2& vec) { _position = {vec.x - consts::CELL_LEN / 2.0f, vec.y - consts::CELL_LEN / 2.0f}; };
 
 bool ChessPiece::CheckCollisionChessPiece(const ChessPiece& other) { return _position.x == other._position.x && _position.y == other._position.y; }
+
+bool ChessPiece::IsAbleToMove(CellPosition src_pos, CellPosition dst_pos) {
+    if (dst_pos.IsOutOfBounds()) {
+        return false;
+    }
+    /**
+     * 1. Start with standard movements
+     * 2. Then add special clauses:
+     *  2.1. pawn start
+     *  2.2. pawn eating
+     *  2.2. pawn en-passent
+     *  2.3. pawn update (start by queen default)
+     *  2.4. king-rook short and long castle
+     **/
+    switch (_type) {
+        case Type::Pawn:
+            return _side == Side::White ? src_pos.y == dst_pos.y + 1 : src_pos.y == dst_pos.y - 1;
+        case Type::Rook:
+        case Type::Knight:
+        case Type::Bishop:
+        case Type::Queen:
+        case Type::King:
+            return true;
+    }
+    return true;
+}
+
 }  // namespace chess_game

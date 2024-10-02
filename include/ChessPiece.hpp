@@ -20,6 +20,8 @@ class ChessPiece {
     void SetCellPosition(CellPosition pos) { _position = pos.ToPixelPosition(); }
     bool CheckCollisionChessPiece(const ChessPiece& other);
     const Side GetSide() { return _side; }
+    const Type GetType() { return _type; }
+    bool IsAbleToMove(CellPosition src_pos, CellPosition dst_pos);
 
    private:
     Type _type;

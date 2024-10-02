@@ -28,6 +28,5 @@ class ChessGame {
     static void _ToggleTurn(Side& turn) { turn = turn == Side::White ? Side::Black : Side::White; };
     static bool _IsDestinationOccupiedByAlly(const std::shared_ptr<ChessPiece>& moving_piece, const std::list<std::shared_ptr<ChessPiece>>& pieces,
                                              CellPosition& destination);
-    static bool _IsAbleToMoveThisWay(const std::shared_ptr<ChessPiece>& moving_piece, CellPosition& last_position, CellPosition& destination) { return true; }
 };
 }  // namespace chess_game

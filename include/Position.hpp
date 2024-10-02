@@ -12,5 +12,6 @@ struct CellPosition {
     CellPosition(int x, int y);
     CellPosition(const Vector2& vec);
     Vector2 ToPixelPosition();
+    bool IsOutOfBounds();
 };
 }  // namespace chess_game
