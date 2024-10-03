@@ -97,7 +97,7 @@ bool ChessPiece::IsAbleToMove(CellPosition src_pos, CellPosition dst_pos) {
      *  2.1. pawn start - done
      *  2.2. pawn eating
      *  2.2. pawn en-passent
-     *  2.3. pawn update (start by queen default) - done
+     *  2.3. pawn upgrade (start by queen default) - done
      *  2.4. king short and long castle
      * 3. What about line of sight? <- for rook and bishop, the others are composed of them!)
      **/
@@ -113,7 +113,7 @@ bool ChessPiece::IsAbleToMove(CellPosition src_pos, CellPosition dst_pos) {
         case Type::Queen:
             return _QueenMovement(src_pos, dst_pos);
         case Type::King:
-            return _KnightMovement(src_pos, dst_pos);
+            return _KingMovement(src_pos, dst_pos);
     }
     return false;
 }
@@ -159,7 +159,7 @@ bool ChessPiece::_RookMovement(CellPosition src_pos, CellPosition dst_pos) {
 }
 
 bool ChessPiece::_BishopMovement(CellPosition src_pos, CellPosition dst_pos) {
-    if (abs(src_pos.y - dst_pos.y) == abs(src_pos.x - dst_pos.x)) {
+    if (smath::abs(src_pos.y - dst_pos.y) == smath::abs(src_pos.x - dst_pos.x)) {
         return true;
     }
     return false;
@@ -168,17 +168,9 @@ bool ChessPiece::_BishopMovement(CellPosition src_pos, CellPosition dst_pos) {
 bool ChessPiece::_QueenMovement(CellPosition src_pos, CellPosition dst_pos) { return _RookMovement(src_pos, dst_pos) || _BishopMovement(src_pos, dst_pos); }
 
 bool ChessPiece::_KingMovement(CellPosition src_pos, CellPosition dst_pos) {
-    if (abs(src_pos.x - dst_pos.x) > 1 || abs(src_pos.y - dst_pos.y) > 1) {
-        return false;
-    } else {
-        return _QueenMovement(src_pos, dst_pos);
-    }
+    return _ChebyshevDistance(src_pos, dst_pos) == 1 && _QueenMovement(src_pos, dst_pos);
 }
 bool ChessPiece::_KnightMovement(CellPosition src_pos, CellPosition dst_pos) {
-    if (abs(src_pos.x - dst_pos.x) > 2 || abs(src_pos.y - dst_pos.y) > 2) {
-        return false;
-    } else {
-        return !_QueenMovement(src_pos, dst_pos);
-    }
+    return _ChebyshevDistance(src_pos, dst_pos) == 2 && !_QueenMovement(src_pos, dst_pos);
 }
 }  // namespace chess_game

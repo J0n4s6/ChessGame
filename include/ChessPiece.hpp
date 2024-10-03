@@ -3,6 +3,7 @@
 
 #include "Constants.hpp"
 #include "Position.hpp"
+#include "SimpleMath.hpp"
 
 namespace chess_game {
 enum class Type { Pawn, Rook, Bishop, Knight, King, Queen };
@@ -38,5 +39,6 @@ class ChessPiece {
     bool _QueenMovement(CellPosition src_pos, CellPosition dst_pos);
     bool _KingMovement(CellPosition src_pos, CellPosition dst_pos);
     bool _KnightMovement(CellPosition src_pos, CellPosition dst_pos);
+    int _ChebyshevDistance(CellPosition r1, CellPosition r2) { return smath::max(smath::abs(r2.x - r1.x), smath::abs(r2.y - r1.y)); }
 };
 }  // namespace chess_game
