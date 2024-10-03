@@ -97,7 +97,7 @@ bool ChessPiece::IsAbleToMove(CellPosition src_pos, CellPosition dst_pos) {
      *  2.1. pawn start - done
      *  2.2. pawn eating
      *  2.2. pawn en-passent
-     *  2.3. pawn update (start by queen default)
+     *  2.3. pawn update (start by queen default) - done
      *  2.4. king short and long castle
      * 3. What about line of sight? <- for rook and bishop, the others are composed of them!)
      **/
@@ -127,13 +127,25 @@ bool ChessPiece::_PawnMovement(CellPosition src_pos, CellPosition dst_pos) {
             if (src_pos.y == 6) {
                 return dst_pos.y == 5 || dst_pos.y == 4;
             } else {
-                return src_pos.y == dst_pos.y + 1;
+                bool can_move = src_pos.y == dst_pos.y + 1;
+                if (can_move && dst_pos.y == 0) {
+                    UnloadTexture(_texture);
+                    _type = Type::Queen;
+                    _texture = _LoadAndReiszeImage(consts::WHITE_QUEEN);
+                }
+                return can_move;
             }
         case Side::Black:
             if (src_pos.y == 1) {
                 return dst_pos.y == 2 || dst_pos.y == 3;
             } else {
-                return src_pos.y == dst_pos.y - 1;
+                bool can_move = src_pos.y == dst_pos.y - 1;
+                if (can_move && dst_pos.y == 7) {
+                    UnloadTexture(_texture);
+                    _type = Type::Queen;
+                    _texture = _LoadAndReiszeImage(consts::BLACK_QUEEN);
+                }
+                return can_move;
             }
     }
     return false;
