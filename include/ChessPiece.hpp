@@ -15,7 +15,6 @@ class ChessPiece {
     ChessPiece(Type type, Side side, CellPosition position);
     ~ChessPiece();
     void DrawChessPiece();
-    bool IsVec2InPiece(const Vector2& vec);
     void UpdatePositionWhenDragging(const Vector2& vec);
     CellPosition GetCellPosition() { return CellPosition(_position); }
     void SetCellPosition(CellPosition pos) { _position = pos.ToPixelPosition(); }

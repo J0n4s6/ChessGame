@@ -69,17 +69,13 @@ Texture2D ChessPiece::_LoadAndReiszeImage(const char* file_name) {
 
 const Rectangle ChessPiece::_GetRectangle() { return {_position.x, _position.y, static_cast<float>(consts::CELL_LEN), static_cast<float>(consts::CELL_LEN)}; }
 
-const CellPosition ChessPiece::_GetCellPosition() {
-    return {static_cast<int>(_position.x / consts::CELL_LEN), static_cast<int>(_position.y / consts::CELL_LEN)};
-}
+const CellPosition ChessPiece::_GetCellPosition() { return CellPosition(_position); }
 
 void ChessPiece::DrawChessPiece() { DrawTexture(_texture, _position.x, _position.y, WHITE); }
 
-bool ChessPiece::IsVec2InPiece(const Vector2& vec) { return CheckCollisionPointRec(vec, _GetRectangle()); }
-
 void ChessPiece::UpdatePositionWhenDragging(const Vector2& vec) { _position = {vec.x - consts::CELL_LEN / 2.0f, vec.y - consts::CELL_LEN / 2.0f}; };
 
-bool ChessPiece::CheckCollisionChessPiece(const ChessPiece& other) { return _position.x == other._position.x && _position.y == other._position.y; }
+bool ChessPiece::CheckCollisionChessPiece(const ChessPiece& other) { return _GetCellPosition() == CellPosition(other._position); }
 
 bool ChessPiece::IsAbleToMove(CellPosition src_pos, CellPosition dst_pos) {
     if (dst_pos.IsOutOfBounds()) {

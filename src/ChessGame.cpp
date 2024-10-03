@@ -38,7 +38,7 @@ ChessGame::ChessGame() {
 
 void ChessGame::UpdateGame() {
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        _moving_piece = _GetPieceCollisionWithMouse(GetMousePosition(), _pieces);
+        _moving_piece = _GetPieceOnCell(CellPosition(GetMousePosition()), _pieces);
         if (_moving_piece != nullptr) {
             _moving_piece_last_position = _moving_piece->GetCellPosition();
         }
@@ -79,9 +79,9 @@ void ChessGame::DrawGame() {
     EndDrawing();
 }
 
-std::shared_ptr<ChessPiece> ChessGame::_GetPieceCollisionWithMouse(const Vector2& vec, const std::list<std::shared_ptr<ChessPiece>>& pieces) {
+std::shared_ptr<ChessPiece> ChessGame::_GetPieceOnCell(CellPosition pos, const std::list<std::shared_ptr<ChessPiece>>& pieces) {
     for (auto& piece : pieces) {
-        if (piece->IsVec2InPiece(vec)) {
+        if (piece->GetCellPosition() == pos) {
             return piece;
         }
     }
@@ -102,8 +102,7 @@ bool ChessGame::_IsDestinationOccupiedByAlly(const std::shared_ptr<ChessPiece>& 
                                              CellPosition& destination) {
     for (auto& piece : pieces) {
         if (piece->GetSide() == moving_piece->GetSide()) {
-            auto piece_pos = piece->GetCellPosition();
-            if (piece_pos.x == destination.x && piece_pos.y == destination.y) {
+            if (piece->GetCellPosition() == destination) {
                 return false;
             }
         }
