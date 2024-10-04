@@ -1,8 +1,10 @@
 #pragma once
 #include <raylib.h>
 
+#include <functional>
 #include <string>
 
+#include "ChessPiece.hpp"
 #include "Constants.hpp"
 
 namespace chess_game {
@@ -13,7 +15,6 @@ class UpgradeWindow {
     const int _window_background_segments = 10;
     const int _window_background_line_thickness = 3;
 
-    // The following options will be in a 2x2 grid
     Vector2 _rook_pos;
     Texture2D _rook_texture;
     Vector2 _bishop_pos;
@@ -23,8 +24,10 @@ class UpgradeWindow {
     Vector2 _queen_pos;
     Texture2D _queen_texture;
 
+    std::function<void(Type)> _choice_callback;
+
    public:
-    UpgradeWindow();
+    UpgradeWindow(std::function<void(Type)> choice_callback);
     ~UpgradeWindow();
     void DrawUpgradeWindow();
     Texture2D _LoadAndReiszeImage(const char* file_name);

@@ -23,6 +23,9 @@ class ChessGame {
     CellPosition _moving_piece_last_position = {0, 0};
     Side _current_turn = Side::White;
     std::unique_ptr<UpgradeWindow> _upgrade_win = nullptr;
+    Type _chosen_upgrade = Type::Queen;
+
+    void _UpdateChosenUpgrade(Type type);
 
     static std::shared_ptr<ChessPiece> _GetPieceOnCell(CellPosition pos, const std::list<std::shared_ptr<ChessPiece>>& pieces);
     static std::optional<std::shared_ptr<ChessPiece>> _MovingPieceEats(const std::shared_ptr<ChessPiece>& moving_piece,

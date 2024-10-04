@@ -70,7 +70,7 @@ void ChessGame::UpdateGame() {
             }
         }
         if (IsKeyPressed(KEY_P)) {
-            _upgrade_win = std::make_unique<UpgradeWindow>();
+            _upgrade_win = std::make_unique<UpgradeWindow>([this](Type upgrade) { this->_UpdateChosenUpgrade(upgrade); });
         }
     } else {  // Popup upgrade window
         if (IsKeyPressed(KEY_C)) {
@@ -90,6 +90,8 @@ void ChessGame::DrawGame() {
     }
     EndDrawing();
 }
+
+void ChessGame::_UpdateChosenUpgrade(Type type) { _chosen_upgrade = type; }
 
 std::shared_ptr<ChessPiece> ChessGame::_GetPieceOnCell(CellPosition pos, const std::list<std::shared_ptr<ChessPiece>>& pieces) {
     for (auto& piece : pieces) {

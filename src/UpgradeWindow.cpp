@@ -3,7 +3,7 @@
 #include <iostream>
 
 namespace chess_game {
-UpgradeWindow::UpgradeWindow() {
+UpgradeWindow::UpgradeWindow(std::function<void(Type)> choice_callback) : _choice_callback(choice_callback) {
     _rook_pos = {_window_background.x + consts::UPGRADE_WINDOW_PIECES_LEN / 3, _window_background.y + consts::UPGRADE_WINDOW_PIECES_LEN / 3};
     _rook_texture = _LoadAndReiszeImage(consts::WHITE_ROOK);
     _bishop_pos = {_window_background.x + consts::UPGRADE_WINDOW_PIECES_LEN / 3, _window_background.y + 5 * consts::UPGRADE_WINDOW_PIECES_LEN / 3};
@@ -19,6 +19,7 @@ UpgradeWindow::~UpgradeWindow() {
     UnloadTexture(_bishop_texture);
     UnloadTexture(_knight_texture);
     UnloadTexture(_queen_texture);
+    _choice_callback(Type::Knight);  // TODO add choosing of type via mouse click collision
 }
 
 void UpgradeWindow::DrawUpgradeWindow() {
