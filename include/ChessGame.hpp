@@ -7,6 +7,7 @@
 
 #include "ChessBoard.hpp"
 #include "ChessPiece.hpp"
+#include "UpgradeWindow.hpp"
 
 namespace chess_game {
 class ChessGame {
@@ -21,6 +22,7 @@ class ChessGame {
     std::shared_ptr<ChessPiece> _moving_piece = nullptr;
     CellPosition _moving_piece_last_position = {0, 0};
     Side _current_turn = Side::White;
+    std::unique_ptr<UpgradeWindow> _upgrade_win = nullptr;
 
     static std::shared_ptr<ChessPiece> _GetPieceOnCell(CellPosition pos, const std::list<std::shared_ptr<ChessPiece>>& pieces);
     static std::optional<std::shared_ptr<ChessPiece>> _MovingPieceEats(const std::shared_ptr<ChessPiece>& moving_piece,

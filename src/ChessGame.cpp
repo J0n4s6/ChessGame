@@ -37,35 +37,44 @@ ChessGame::ChessGame() {
 }
 
 void ChessGame::UpdateGame() {
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        _moving_piece = _GetPieceOnCell(CellPosition(GetMousePosition()), _pieces);
-        if (_moving_piece != nullptr) {
-            _moving_piece_last_position = _moving_piece->GetCellPosition();
-        }
-    }
-    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-        if (_moving_piece != nullptr) {
-            CellPosition moving_piece_destination = CellPosition(GetMousePosition());
-            bool move_is_legal = true;
-            move_is_legal &= _moving_piece->GetSide() == _current_turn;
-            move_is_legal &= _IsDestinationOccupiedByAlly(_moving_piece, _pieces, moving_piece_destination);
-            move_is_legal &= _moving_piece->IsAbleToMove(_moving_piece_last_position, moving_piece_destination);
-            if (move_is_legal) {
-                _moving_piece->SetCellPosition(moving_piece_destination);
-                auto eaten_piece = _MovingPieceEats(_moving_piece, _pieces);
-                if (eaten_piece.has_value()) {
-                    _pieces.remove(eaten_piece.value());
-                }
-                _ToggleTurn(_current_turn);
-            } else {
-                _moving_piece->SetCellPosition(_moving_piece_last_position);
+    if (_upgrade_win == nullptr) {  // Normal Game
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            _moving_piece = _GetPieceOnCell(CellPosition(GetMousePosition()), _pieces);
+            if (_moving_piece != nullptr) {
+                _moving_piece_last_position = _moving_piece->GetCellPosition();
             }
-            _moving_piece = nullptr;
         }
-    }
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-        if (_moving_piece != nullptr) {
-            _moving_piece->UpdatePositionWhenDragging(GetMousePosition());
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+            if (_moving_piece != nullptr) {
+                CellPosition moving_piece_destination = CellPosition(GetMousePosition());
+                bool move_is_legal = true;
+                move_is_legal &= _moving_piece->GetSide() == _current_turn;
+                move_is_legal &= _IsDestinationOccupiedByAlly(_moving_piece, _pieces, moving_piece_destination);
+                move_is_legal &= _moving_piece->IsAbleToMove(_moving_piece_last_position, moving_piece_destination);
+                if (move_is_legal) {
+                    _moving_piece->SetCellPosition(moving_piece_destination);
+                    auto eaten_piece = _MovingPieceEats(_moving_piece, _pieces);
+                    if (eaten_piece.has_value()) {
+                        _pieces.remove(eaten_piece.value());
+                    }
+                    _ToggleTurn(_current_turn);
+                } else {
+                    _moving_piece->SetCellPosition(_moving_piece_last_position);
+                }
+                _moving_piece = nullptr;
+            }
+        }
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+            if (_moving_piece != nullptr) {
+                _moving_piece->UpdatePositionWhenDragging(GetMousePosition());
+            }
+        }
+        if (IsKeyPressed(KEY_P)) {
+            _upgrade_win = std::make_unique<UpgradeWindow>();
+        }
+    } else {  // Popup upgrade window
+        if (IsKeyPressed(KEY_C)) {
+            _upgrade_win = nullptr;
         }
     }
 }
@@ -75,6 +84,9 @@ void ChessGame::DrawGame() {
     _chess_board.DrawCheckBoard();
     for (auto& piece : _pieces) {
         piece->DrawChessPiece();
+    }
+    if (_upgrade_win != nullptr) {
+        _upgrade_win->DrawUpgradeWindow();
     }
     EndDrawing();
 }
